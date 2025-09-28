@@ -1,23 +1,46 @@
+{% extends "base.html" %}
 {% load i18n %}
-
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Subjects overview</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  </head>
-  <body>
+
+{% block title %}Subjects overview{% endblock %}
+
+{% block content %}
   <div class="d-flex justify-content-center mt-4">
-      <a class="btn btn-info text-white" href="{% url 'todo:subject_create' %}">Create new subject</a>
+    <a class="btn btn-info text-white" href="{% url 'todo:subject_create' %}">
+      {% trans "Create new subject" %}
+    </a>
   </div>
+
   <div class="card border-info mt-5 w-75 mx-auto">
-        <h5 class="card-header text-white bg-info">{% trans 'My Subjects' %}</h5>
+    <h5 class="card-header text-white bg-info">{% trans "My Subjects" %}</h5>
     <div class="card-body mt-3">
-        <p class="card-text">I'll put a list of subjects here.</p>
+      <table id="subjectTable" class="table table-striped table-bordered">
+        <thead>
+          <tr class="text-center">
+              <th>{% trans 'Subject' %} </th>
+              <th>{% trans 'Credit points' %}</th>
+              <th>{% trans 'Next exam' %}</th>
+              <th>{% trans 'Team' %}</th>
+              <th>{% trans 'Status' %}</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for subject in subject_list %}
+                <tr class="text-center">
+                    <td>
+                        <a href="{% url 'todo:subject_details' subject.id %}" class="btn btn-outline-secondary">
+                            {{ subject.name }}
+                        </a>
+                    </td>
+                    <td>{{ subject.cp }}</td>
+                    <td>{{ subject.exam_date | default:'' }}</td>
+                    <td>{{ subject.team.name }}</td>
+                    <td>{{ subject.get_status_display }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+
     </div>
   </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  </body>
+{% endblock %}

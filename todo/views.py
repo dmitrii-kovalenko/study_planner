@@ -28,3 +28,12 @@ class SubjectDeleteView(generic.DeleteView):
     model = Subject
     template_name = "subject_delete.html"
     success_url = reverse_lazy("todo:subject_list")
+
+
+class GlobalOverview(TemplateView):
+    template_name = "global_overview.html"
+
+
+class SubjectDetailView(generic.DetailView):
+    template_name = "subject_details.html"
+    model = Subject

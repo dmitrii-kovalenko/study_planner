@@ -9,4 +9,6 @@ urlpatterns = [
     path("subject/list/", views.SubjectListView.as_view(), name="subject_list"),
     path("subject/update/<int:pk>/", views.SubjectUpdateView.as_view(), name="subject_update"),
     path("subject/delete/<int:pk>/", views.SubjectDeleteView.as_view(), name="subject_delete"),
+    path("global_overview/", views.GlobalOverview.as_view(), name="global_overview"),
+    path("subject/<int:pk>", views.SubjectDetailView.as_view(), name="subject_details"),
 ]
