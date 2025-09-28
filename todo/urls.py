@@ -1,0 +1,12 @@
+from django.urls import path
+from todo import views
+
+app_name = "todo"
+urlpatterns = [
+
+    path("", views.Start.as_view(), name="start"),
+    path("subject/create/", views.SubjectCreateView.as_view(), name="subject_create"),
+    path("subject/list/", views.SubjectListView.as_view(), name="subject_list"),
+    path("subject/update/<int:pk>/", views.SubjectUpdateView.as_view(), name="subject_update"),
+    path("subject/delete/<int:pk>/", views.SubjectDeleteView.as_view(), name="subject_delete"),
+]
