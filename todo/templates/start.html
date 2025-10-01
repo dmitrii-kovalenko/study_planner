@@ -7,6 +7,9 @@
 {% block content %}
   <h1 class="mt-5 text-center text-primary text-info" >Welcome to the Student planner!</h1>
     <div class="d-flex justify-content-center mt-4">
-        <a class="btn btn-info text-white" href="{% url 'todo:subject_list' %}">Go to the subjects</a>
+        <a class="btn btn-info btn-lg text-white" href="{% url 'todo:subject_list' %}">Go to the subjects</a>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+        <a class="btn btn-info btn-lg text-white" href="{% url 'todo:global_overview' %}">Go to the global overview</a>
     </div>
 {% endblock %}

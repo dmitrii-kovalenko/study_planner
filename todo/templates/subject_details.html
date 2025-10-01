@@ -2,11 +2,51 @@
 {% load i18n %}
 {% load static %}
 
-{% block title %}Student planer{% endblock %}
+{% block title %}Detailed View{% endblock %}
 
 {% block content %}
-  <h1 class="mt-5 text-center text-primary text-info" >Welcome to the Student planner!</h1>
-    <div class="d-flex justify-content-center mt-4">
-        <a class="btn btn-info text-white" href="{% url 'todo:subject_list' %}">Go to the subjects</a>
+    <div class="card border-info mt-5 w-75 mx-auto">
+        <div class="card-header d-flex justify-content-between bg-info">
+        <h2 class=" text-white" >Detailed View</h2>
+        <a class="btn text-white btn-lg btn-secondary ms-auto" href="{% url 'todo:subject_list' %}">Go back to all Subjects </a>
+        </div>
+        <div class="card-body">
+
+            <div class="d-flex justify-content-around">
+                <a class="btn btn-info text-white btn-lg" href="{% url 'todo:subject_update' subject.id %}">Update Subject</a>
+                <h3 class="text-center text-info mb-4">{{ subject.name }}</h3>
+                <a class="btn btn-danger text-white btn-lg" href="{% url 'todo:subject_delete' subject.id %}">Delete Subject</a>
+            </div>
+            <hr>
+
+            <div class="d-flex justify-content-around">
+                <a class="btn btn-info text-white btn-lg mb-3" href="{% url 'todo:assignment_create' subject.id %}">Add Assignment</a>
+                <a class="btn btn-info text-white btn-lg mb-3" href="{% url 'todo:assignments_manage' subject.id %}">Update Assignments</a>
+            </div>
+            <table id="assignmentTable"class="table table-striped table-bordered">
+                <thead>
+                   <tr class="text-center">
+                       <th>{% trans 'Assignment' %} </th>
+                       <th>{% trans 'Deadline' %}</th>
+                       <th>{% trans 'Time Left' %}</th>
+                       <th>{% trans 'Status' %}</th>
+                   </tr>
+                </thead>
+                <tbody>
+                    {% for assignment in assignment_list %}
+                        <tr class="text-center">
+                            <td>
+                                <a href="{% url 'todo:assignment_update' assignment.id %}" class="btn btn-outline-secondary">
+                                    {{ assignment.title }}
+                                </a>
+                            </td>
+                            <td>{{ assignment.deadline|default:'' }}</td>
+                            <td>{{ assignment.how_far_ahead|default:'' }}</td>
+                            <td>{{ assignment.get_status_display }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}

@@ -1,12 +1,23 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% load i18n %}
-{% load static %}
 
-{% block title %}Subject update{% endblock %}
+{% block title %}{% trans "Edit subject" %}{% endblock %}
 
 {% block content %}
-  <h1 class="mt-5 text-center text-primary text-info" >Welcome to the Student planner!</h1>
-    <div class="d-flex justify-content-center mt-4">
-        <a class="btn btn-info text-white" href="{% url 'todo:subject_list' %}">Go to the subjects</a>
+  <div class="card border-info mt-5 w-50 mx-auto">
+    <h5 class="card-header text-white bg-info">
+      {% trans 'Edit subject' %}: {{ object.name }}
+    </h5>
+    <div class="card-body">
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% crispy form %}
+        <input class="btn btn-primary" type="submit" value="{% translate 'Save changes' %}">
+        <a class="btn btn-outline-secondary" href="{% url 'todo:subject_details' pk=object.pk %}">
+          {% trans 'Cancel' %}
+        </a>
+      </form>
     </div>
+  </div>
 {% endblock %}

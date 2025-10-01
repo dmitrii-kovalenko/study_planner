@@ -27,21 +27,28 @@ class Team(models.Model):
     members = models.ManyToManyField(Student)
 
 class Assignment(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="assignments")
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
+    deadline = models.DateTimeField(null=True, blank=True)
 
     class Status(models.IntegerChoices):
         PENDING = 0, "Pending"
         IN_PROGRESS = 1, "In progress"
         COMPLETED = 2, "Completed"
         FAILED = 3, "Failed"
-    deadline = models.DateTimeField(null=True, blank=True)
+    status = models.IntegerField(choices=Status.choices, default=Status.PENDING)
 
     def how_far_ahead(self):
+        if not self.deadline:
+            return ""
         delta = self.deadline - now()
+        if delta.total_seconds() < 0:
+            return "Too late!"
         days = delta.days
         hours = delta.seconds // 3600
-        return days, hours
+        return f"{days} days, {hours} hours"
+
 
 class Subtask(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name="subtasks")

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}{% trans "Manage assignments" %}{% endblock %}
+
+{% block content %}
+  <div class="card border-info mt-5 w-75 mx-auto">
+    <h5 class="card-header text-white bg-info">
+      {% trans 'Manage assignments for' %} {{ object.name }}
+    </h5>
+
+    <div class="card-body">
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        {{ formset.management_form }}
+
+        {% if formset.non_form_errors %}
+          <div class="alert alert-danger mb-3">
+            {{ formset.non_form_errors }}
+          </div>
+        {% endif %}
+
+        {% for form in formset %}
+          <div class="border rounded p-3 mb-3">
+            {{ form.id }}
+
+            {% crispy form %}
+
+            {% if form.instance.pk %}
+              <div class="form-check mt-2">
+                {{ form.DELETE }}
+                <label class="form-check-label" for="{{ form.DELETE.id_for_label }}">
+                  {% trans "Delete this assignment" %}
+                </label>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <input class="btn btn-primary" type="submit" value="{% translate 'Save' %}">
+      </form>
+    </div>
+  </div>
+{% endblock %}

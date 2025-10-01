@@ -1,6 +1,8 @@
 import datetime
 from django import forms
-from todo.models import Subject
+from django.forms.models import inlineformset_factory
+
+from todo.models import Subject, Assignment
 from crispy_forms.helper import FormHelper
 
 class SubjectForm(forms.ModelForm):
@@ -8,11 +10,11 @@ class SubjectForm(forms.ModelForm):
         model = Subject
         fields = "__all__"
         labels = {
-            "name": "Subject name",
-            "cp": "Credit points",
-            "have_exam_permit": "Do you have the exam permit?",
-            "exam_date": "Exam date",
-            "comment": "Additional information",
+            "name": "Subject Name",
+            "cp": "Credit Points",
+            "have_exam_permit": "Do you have the Exam Permit?",
+            "exam_date": "Exam Date",
+            "comment": "Additional Information",
             "team": "Team"
         }
         error_messages = {
@@ -39,3 +41,31 @@ class SubjectForm(forms.ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_tag = False
+
+class AssignmentForm(forms.ModelForm):
+    class Meta:
+        model = Assignment
+        exclude = ("subject",)
+        labels = {
+            "title": "Assignment Name",
+            "description": "Information",
+            "deadline": "Deadline"
+        }
+        widgets = {
+            "deadline": forms.DateTimeInput(attrs={"type": "datetime-local", "min": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M")}),
+            "description": forms.Textarea(attrs={"rows": 4}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+AssignmentFormSet = inlineformset_factory(
+    Subject,
+    Assignment,
+    form=AssignmentForm,
+    extra=1,
+    can_delete=True
+)

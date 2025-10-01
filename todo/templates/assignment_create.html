@@ -7,7 +7,7 @@
 
 {% block content %}
   <div class="card border-info mt-5 w-50 mx-auto">
-        <h5 class="card-header text-white bg-info">{% trans 'New subject' %}</h5>
+        <h5 class="card-header text-white bg-info">{% trans 'New assignment for' %} {{ subject.name }} </h5>
         <div class="card-body">
             <form method="post">
                 {% crispy form %}
